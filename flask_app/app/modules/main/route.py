@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, render_template
 from .controller import MainController
 
 
@@ -9,6 +9,4 @@ def index():
     """ 
     file: example.yml
     """
-    result=main_controller.index()
-    return make_response(jsonify(data=result))
-      
+    return render_template('main.html')

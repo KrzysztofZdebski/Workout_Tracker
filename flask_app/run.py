@@ -1,12 +1,14 @@
 import os
 from dotenv import load_dotenv
 from app.app import create_app
+from flask_cors import CORS
 
 load_dotenv()
 
 config=os.getenv('FLASK_ENV') or 'development'
 
 app = create_app(config)
+CORS(app)
 
 if __name__ == "__main__":
     if config == 'development':
