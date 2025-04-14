@@ -1,9 +1,15 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 class BaseConfig:
     """Base configuration."""
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = 'your-secret-key'
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
