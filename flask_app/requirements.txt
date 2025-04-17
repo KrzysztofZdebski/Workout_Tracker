@@ -5,3 +5,9 @@ pytest
 gunicorn
 flasgger
 flask-cors
+flask-wtf
+flask-security
+cryptography
+qrcode
+phonenumbers
+flask-mail

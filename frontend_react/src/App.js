@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
   return (
@@ -22,5 +23,36 @@ function App() {
     </div>
   );
 }
+
+const login = async (email, password) => {
+  try {
+    const response = await axios.post('/api/accounts/login', {
+      email,
+      password,
+    }, {
+      withCredentials: true, // Include cookies
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    // Handle successful login
+  } catch (error) {
+    // Handle login errors
+  }
+};
+
+const logout = async () => {
+  try {
+    await axios.post('/api/accounts/logout', {}, {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    // Handle successful logout
+  } catch (error) {
+    // Handle logout errors
+  }
+};
 
 export default App;

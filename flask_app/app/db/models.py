@@ -3,35 +3,24 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship, backref
 from flask_security import UserMixin, RoleMixin
 
-class RolesUsers(db.Model):
-    __tablename__ = "roles_users"
-    id = Column(Integer(), primary_key=True)
-    user_id = Column("user_id", Integer(), ForeignKey("user.id"))
-    role_id = Column("role_id", Integer(), ForeignKey("role.id"))
-
-
-class Role(db.Model, RoleMixin):
-    __tablename__ = "role"
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(80), unique=True)
-    description = Column(String(255))
-
+roles_users = db.Table(
+    'roles_users',
+    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
+)
 
 class User(db.Model, UserMixin):
-    __tablename__ = "user"
-    id = Column(Integer(), primary_key=True)
-    email = Column(String(255), unique=True)
-    username = Column(String(255), unique=True, nullable=True)
-    password = Column(String(255), nullable=False)
-    last_login_at = Column(DateTime())
-    current_login_at = Column(DateTime())
-    last_login_ip = Column(String(100))
-    current_login_ip = Column(String(100))
-    login_count = Column(Integer)
-    active = Column(Boolean())
-    premium = Column(Boolean())
-    fs_uniquifier = Column(String(255), unique=True, nullable=False)
-    confirmed_at = Column(DateTime())
-    roles = relationship(
-        "Role", secondary="roles_users", backref=backref("users", lazy="dynamic")
-    )
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean(), nullable=False)
+    fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
+    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
+    confirmed_at = db.Column(db.DateTime, nullable=True, default=None)
+    tf_totp_secret = db.Column(db.String(255), nullable=True)
+    tf_primary_method = db.Column(db.String(64), nullable=True)
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False)
+    description = db.Column(db.String(255))
