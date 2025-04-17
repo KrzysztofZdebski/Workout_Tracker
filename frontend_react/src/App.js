@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './Login';
 
 function App() {
   return (
@@ -20,6 +22,14 @@ function App() {
       <main className="app-main">
         <button className="cta-button">Get Started</button>
       </main>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            {/* Add other routes here */}
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }

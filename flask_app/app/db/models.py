@@ -1,26 +1,36 @@
 from app.db.db import db
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, backref, mapped_column
 from flask_security import UserMixin, RoleMixin
+import sqlalchemy as sa
 
-roles_users = db.Table(
-    'roles_users',
-    db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('role.id'))
-)
+class RolesUsers(db.Model):
+    __tablename__ = 'roles_users'
+    id      = mapped_column(sa.Integer(), primary_key=True)
+    user_id = mapped_column(sa.Integer(), sa.ForeignKey('user.id'))
+    role_id = mapped_column(sa.Integer(), sa.ForeignKey('role.id'))
+
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255))
-    active = db.Column(db.Boolean(), nullable=False)
-    fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
-    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
-    confirmed_at = db.Column(db.DateTime, nullable=True, default=None)
+    __tablename__ = 'user'
+    id                = mapped_column(sa.Integer(), primary_key=True)
+    email             = mapped_column(sa.String(255), unique=True)
+    username          = mapped_column(sa.String(255), unique=True, nullable=True)
+    password          = mapped_column(sa.String(255), nullable=False)
+    last_login_at     = mapped_column(sa.DateTime())
+    current_login_at  = mapped_column(sa.DateTime())
+    last_login_ip     = mapped_column(sa.String(100))
+    current_login_ip  = mapped_column(sa.String(100))
+    login_count       = mapped_column(sa.Integer())
+    active            = mapped_column(sa.Boolean())
+    fs_uniquifier     = mapped_column(sa.String(255), unique=True, nullable=False)
+    confirmed_at      = mapped_column(sa.DateTime())
+    roles             = relationship('Role', secondary='roles_users', back_populates="users", lazy=True)
     tf_totp_secret = db.Column(db.String(255), nullable=True)
     tf_primary_method = db.Column(db.String(64), nullable=True)
 
 class Role(db.Model, RoleMixin):
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
-    description = db.Column(db.String(255))
+    __tablename__ = 'role'
+    id          = mapped_column(sa.Integer(), primary_key=True)
+    name        = mapped_column(sa.String(80), unique=True)
+    description = mapped_column(sa.String(255))
+    users       = relationship('User', secondary='roles_users', back_populates="roles", lazy=True)
