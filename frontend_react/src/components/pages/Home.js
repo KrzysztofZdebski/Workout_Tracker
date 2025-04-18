@@ -4,7 +4,6 @@ import Navbar from "../Navbar";
 function Home() {
     return (
       <>
-        <Navbar />
         <header className="app-header">
           <h1>Welcome to Workout Tracker</h1>
           <p>Track your workouts and achieve your fitness goals!</p>
