@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Main from './components/pages/Home';
 import Login from './components/pages/Login';
 import Navbar from './components/Navbar';
+import CalorieCounter from './components/pages/Calorie_counter';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/calorie_counter" element={<CalorieCounter />} />
           </Routes>
         </div>
       </Router>

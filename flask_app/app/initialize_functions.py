@@ -2,6 +2,7 @@ from flask import Flask
 from flasgger import Swagger
 from flask_cors import CORS
 from app.modules.main.route import main_bp
+from app.modules.calorie_counter.route import calorie_counter_bp
 from app.db.db import db
 from app.db.models import User, Role
 import flask_wtf
@@ -14,6 +15,7 @@ mail = Mail()
 def initialize_route(app: Flask):
     with app.app_context():
         app.register_blueprint(main_bp)
+        app.register_blueprint(calorie_counter_bp, url_prefix='/calorie_counter')
 
 
 def initialize_db(app: Flask):

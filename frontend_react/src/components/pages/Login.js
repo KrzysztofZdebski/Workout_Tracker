@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import axios from "axios";
 
 function Login() {
@@ -32,11 +32,12 @@ function Login() {
 
     function logoutUser(email, password) {
         const loginData = {
-            email: email,
-            password: password
+            // email: email,
+            // password: password
+            email: user.email,
         };
 
-        axios.post("http://localhost:5000/api/accounts/logout", loginData, {
+        axios.post("http://localhost:5000/api/accounts/logout", {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -66,14 +67,15 @@ function Login() {
 
     const submitLogout = (event) => {
         event.preventDefault(); // Prevent form submission and page reload
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        // const email = document.getElementById('email').value;
+        // const password = document.getElementById('password').value;
 
-        if (email && password) {
-            logoutUser(email, password);
-        } else {
-            alert("Please fill in all fields.");
-        }
+        // if (email && password) {
+        //     logoutUser(email, password);
+        // } else {
+        //     alert("Please fill in all fields.");
+        // }
+        logoutUser();
     }
 
     return (
