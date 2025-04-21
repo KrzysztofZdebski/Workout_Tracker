@@ -1,6 +1,5 @@
 from flask import Blueprint, make_response, jsonify
 from .controller import Calorie_counterController
-from flask_security import auth_required
 
 
 calorie_counter_bp = Blueprint('calorie_counter', __name__)
@@ -28,7 +27,6 @@ def index():
     return make_response(jsonify(data=result))
       
 @calorie_counter_bp.route('/test', methods=['GET'])
-@auth_required('token', 'session')
 def test():
     """ Example endpoint with simple greeting.
     ---
