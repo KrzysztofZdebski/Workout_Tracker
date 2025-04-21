@@ -49,6 +49,10 @@ class BaseConfig:
     WTF_CSRF_CHECK_DEFAULT = False
     WTF_CSRF_TIME_LIMIT = None
 
+    SECURITY_CSRF_COOKIE_SECURE = True  
+    SECURITY_CSRF_COOKIE_HTTPONLY = True
+    SECURITY_CSRF_COOKIE_SAMESITE = "Lax"
+
     # Two-factor authentication configurations
     SECURITY_TWO_FACTOR_ENABLED_METHODS = ['email', 'authenticator']
     SECURITY_TWO_FACTOR = True
@@ -76,6 +80,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
     SECURITY_REDIRECT_HOST = 'localhost:3000'
+    SECURITY_CONFIRMABLE = False
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""

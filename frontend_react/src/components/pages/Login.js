@@ -1,8 +1,12 @@
-import React, { use } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 function Login() {
-    function loginUser(email, password) {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    function loginUser(event) {
+        event.preventDefault(); 
         const loginData = {
             email: email,
             password: password
@@ -30,14 +34,14 @@ function Login() {
             });
     }
 
-    function logoutUser(email, password) {
+    function logoutUser(event) {
+        event.preventDefault(); 
         const loginData = {
-            // email: email,
-            // password: password
-            email: user.email,
+            email: email,
+            password: password
         };
 
-        axios.post("http://localhost:5000/api/accounts/logout", {
+        axios.post("http://localhost:5000/api/accounts/logout", loginData,{
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -53,46 +57,21 @@ function Login() {
             });
     }
 
-    const submitLogin = (event) => {
-        event.preventDefault(); // Prevent form submission and page reload
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        if (email && password) {
-            loginUser(email, password);
-        } else {
-            alert("Please fill in all fields.");
-        }
-    }
-
-    const submitLogout = (event) => {
-        event.preventDefault(); // Prevent form submission and page reload
-        // const email = document.getElementById('email').value;
-        // const password = document.getElementById('password').value;
-
-        // if (email && password) {
-        //     logoutUser(email, password);
-        // } else {
-        //     alert("Please fill in all fields.");
-        // }
-        logoutUser();
-    }
-
     return (
       <div className="login-container">
         <h2>Login</h2>
         <form>
           <div className="form-group">
             <label htmlFor="email">Email:</label>
-            <input type="email" id="email" required />
+            <input type="email" id="email" required onChange={(event) => setEmail(event.target.value)}/>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
-            <input type="password" id="password" required />
+            <input type="password" id="password" required onChange={(event) => setPassword(event.target.value)}/>
           </div>
-          <button type="submit" onClick={submitLogin}>Login</button>
+          <button type="submit" onClick={(event) => loginUser(event)}>Login</button>
         </form>
-        <button onClick={submitLogout}>Logout</button>
+        <button onClick={(event) => logoutUser(event)}>Logout</button>
       </div>
     );
 }

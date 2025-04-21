@@ -5,6 +5,7 @@ import Main from './components/pages/Home';
 import Login from './components/pages/Login';
 import Navbar from './components/Navbar';
 import CalorieCounter from './components/pages/Calorie_counter';
+import Register from './components/pages/Register';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/calorie_counter" element={<CalorieCounter />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </div>
       </Router>

@@ -27,6 +27,11 @@ class User(db.Model, UserMixin):
     roles             = relationship('Role', secondary='roles_users', back_populates="users", lazy=True)
     tf_totp_secret = db.Column(db.String(255), nullable=True)
     tf_primary_method = db.Column(db.String(64), nullable=True)
+    def get_security_payload(self):
+        return {
+            'email': self.email,
+        }
+
 
 class Role(db.Model, RoleMixin):
     __tablename__ = 'role'
