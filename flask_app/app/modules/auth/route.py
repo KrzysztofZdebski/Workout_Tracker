@@ -120,6 +120,7 @@ def login_get():
     result = auth_controller.login_get(current_user)
     return make_response(result)
 
+
 @auth_bp.post('/register')
 def register():
     """ Example endpoint for user registering.
@@ -180,6 +181,7 @@ def register():
     result = auth_controller.register(request)
     return make_response(result)
 
+
 @auth_bp.delete('/logout/refresh')
 @jwt_required(refresh=True)
 def logout_refresh():
@@ -232,6 +234,7 @@ def logout_access():
     """
     result = auth_controller.logout(get_jwt()["jti"], access=True)
     return make_response(result)
+
 
 @auth_bp.post('/refresh')
 @jwt_required(refresh=True)
