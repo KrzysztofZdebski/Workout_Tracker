@@ -1,6 +1,5 @@
 from app.db.db import db
 from sqlalchemy.orm import relationship, backref, mapped_column
-from flask_security import UserMixin, RoleMixin
 import sqlalchemy as sa
 from uuid import uuid4
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,7 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #     role_id = mapped_column(sa.Integer(), sa.ForeignKey('role.id'))
 
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     __tablename__ = 'user'
     id                = mapped_column(sa.String(), primary_key=True, default=str(uuid4()))
     email             = mapped_column(sa.String(255), unique=True)
