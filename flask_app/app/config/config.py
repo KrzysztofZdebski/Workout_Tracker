@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
@@ -8,8 +9,17 @@ class BaseConfig:
     DEBUG = False
     TESTING = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = os.getenv('SECRET_KEY')
-    SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
+    # SECRET_KEY = os.getenv('SECRET_KEY')
+    # SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
+
+    #JWT-extended
+    JWT_SECRET_KEY = os.getenv('FLASK_JWT_SECRET_KEY')
+    JWT_TOKEN_LOCATION = ["headers","cookies"]
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=20)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=15)
+    JWT_COOKIE_SECURE = True
+    JWT_COOKIE_CSRF_PROTECT = True
+    JWT_CSRF_IN_COOKIES = True
 
     # SQLAlchemy engine options
     SQLALCHEMY_ENGINE_OPTIONS = {

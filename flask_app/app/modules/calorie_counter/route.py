@@ -1,4 +1,5 @@
 from flask import Blueprint, make_response, jsonify
+from flask_jwt_extended import current_user, jwt_required
 from .controller import Calorie_counterController
 
 
@@ -26,12 +27,17 @@ def index():
     result=calorie_counter_controller.index()
     return make_response(jsonify(data=result))
       
-@calorie_counter_bp.route('/test', methods=['GET'])
+@calorie_counter_bp.get('/test')
+@jwt_required()
 def test():
     """ Example endpoint with simple greeting.
     ---
     tags:
       - Example API
+    parameters:
+      - in: header
+        Set-Cookie:
+        name: access_token_cookie
     responses:
       200:
         description: A simple greeting
@@ -45,4 +51,4 @@ def test():
                   type: string
                   example: "Hello World!"
     """
-    return make_response(jsonify(data={'message':'authenticated'}))
+    return make_response(jsonify(data={'message': 'authenticated', 'username': current_user.username}))
