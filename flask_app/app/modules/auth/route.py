@@ -13,7 +13,7 @@ def index():
     
     """
     result=auth_controller.index()
-    return make_response(jsonify(data=result))
+    return make_response(result)
       
 @auth_bp.post('/login')
 def login():
@@ -48,7 +48,7 @@ def login():
                   example: "Login successful!"
     """
     result = auth_controller.login(request)
-    return make_response(jsonify(data=result))
+    return make_response(result)
 
 @auth_bp.post('/register')
 def register():
@@ -108,10 +108,10 @@ def register():
             example: "Missing required fields!"
     """
     result = auth_controller.register(request)
-    return make_response(jsonify(data=result))
+    return make_response(result)
 
 @auth_bp.post('/logout')
 def logout():
     """ Example endpoint for user logout."""
     result = auth_controller.logout(request)
-    return make_response(jsonify(data=result))
+    return make_response(result)

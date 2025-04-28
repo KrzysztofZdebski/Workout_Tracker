@@ -2,6 +2,7 @@ from app.modules.auth.route import auth_bp
 from flask import Flask
 from flasgger import Swagger
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from app.modules.main.route import main_bp
 from app.modules.calorie_counter.route import calorie_counter_bp
 from app.db.db import db
@@ -27,3 +28,8 @@ def initialize_swagger(app: Flask):
 def initialize_cors(app: Flask):
     with app.app_context():
         CORS(app, supports_credentials=True, origins=["http://localhost:3000"])
+
+def initialize_jwt(app: Flask):
+    with app.app_context():
+        jwt = JWTManager(app)
+        return jwt

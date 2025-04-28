@@ -1,6 +1,6 @@
 from flask import Flask
 from app.config.config import get_config_by_name
-from app.initialize_functions import initialize_route, initialize_db, initialize_swagger, initialize_cors
+from app.initialize_functions import initialize_route, initialize_db, initialize_swagger, initialize_cors, initialize_jwt
 
 def create_app(config=None) -> Flask:
     """
@@ -16,14 +16,10 @@ def create_app(config=None) -> Flask:
     if config:
         app.config.from_object(get_config_by_name(config))
 
-    # Initialize extensions
     initialize_db(app)
-    # Register blueprints
     initialize_route(app)
-    # Initialize Swagger
     initialize_swagger(app)
     initialize_cors(app)
-    # initialize_login(app)
-    
+    initialize_jwt(app)
 
     return app
