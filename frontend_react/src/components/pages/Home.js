@@ -25,7 +25,11 @@ function Home() {
         });
         setCsrfToken(Cookies.get('csrf_refresh_token'));
         setAccessToken(localStorage.getItem('access_token'));
-        setEmail((JSON.parse(atob(accessToken.split('.')[1]))).email);
+        if (localStorage.getItem('access_token')) {
+            setEmail((JSON.parse(atob((localStorage.getItem('access_token')).split('.')[1]))).email);
+        }else{
+            setEmail('No email found');
+        }
     }
     const deleteToken = () => {
         localStorage.removeItem('access_token');

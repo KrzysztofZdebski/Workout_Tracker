@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import api from "../../utils/api"; // Import the configured axios instance
+import Cookies from 'js-cookie';
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -36,27 +37,35 @@ function Login() {
         });
     }
 
-    function logoutUser(event) {
+    async function logoutUser(event) {
         event.preventDefault(); 
-        const loginData = {
-            username: username,
-            password: password
-        };
+        const csrfToken = Cookies.get('csrf_refresh_token'); 
 
-        axios.post("http://localhost:5000/api/accounts/logout", loginData,{
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                withCredentials: true
+        await api.delete("/auth/logout/access")
+        .then(response => {
+            console.log(response.data); 
+            console.log('logged out access token');
         })
-            .then(response => {
-                console.log(response.data); // Log the response to see its structure
-                console.log('logged out')
-            })
-            .catch(error => {
-                console.error("There was an error logging out!", error);
-                alert("An error occurred. Please try again later.");
-            });
+        .catch(error => {
+            console.error("There was an error logging out!", error);
+            alert("An error occurred. Please try again later.");
+        });
+        localStorage.removeItem('access_token'); 
+        await axios.delete("/auth/logout/refresh", {
+            headers: {
+                'X-CSRF-Token': csrfToken, 
+            },
+            withCredentials: true
+        })
+        .then(response => {
+            console.log(response.data); 
+            console.log('logged out refresh token');
+        })
+        .catch(error => {
+            console.error("There was an error logging out!", error);
+            alert("An error occurred. Please try again later.");
+        });
+
     }
 
     return (

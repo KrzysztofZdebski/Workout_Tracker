@@ -1,15 +1,14 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
+import api from "../../utils/api"; // Import the configured axios instance
 
 function CalorieCounter() {
     const [TestVar, setTest] = useState("");
     
 
     function setTestVar(){
-        axios.get("http://localhost:5000/calorie_counter/test", {
-            withCredentials: true
-        })
+        api.get("/calorie_counter/test")
         .then(response => {
             console.log(response.data); // Log the response to see its structure
             setTest(response.data.data.message); // Assuming the response has a 'message' field

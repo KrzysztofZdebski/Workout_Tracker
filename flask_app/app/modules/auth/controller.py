@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
-from flask import current_app, jsonify
-from flask_jwt_extended import create_access_token, create_refresh_token, current_user, get_jwt, jwt_required, set_access_cookies, set_refresh_cookies, unset_jwt_cookies
+from flask import  jsonify
+from flask_jwt_extended import create_access_token, create_refresh_token, set_refresh_cookies, unset_refresh_cookies
 from app.db.models import TokenBlocklist, User
 
 
@@ -63,7 +63,8 @@ class AuthController:
     def logout(self, jti, access):
         self.add_to_blocklist(jti)
         response = jsonify({"msg": "logout successful"})
-        unset_jwt_cookies(response)
+        if not access:
+            unset_refresh_cookies(response)
         return response, 200
 
     def refresh(self, token, user):
