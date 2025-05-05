@@ -15,7 +15,7 @@ class BaseConfig:
     #JWT-extended
     JWT_SECRET_KEY = os.getenv('FLASK_JWT_SECRET_KEY')
     JWT_TOKEN_LOCATION = ["headers","cookies"]
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=20)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=10)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=15)
     JWT_COOKIE_SECURE = True
     JWT_COOKIE_CSRF_PROTECT = True
@@ -31,6 +31,8 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
     SECURITY_REDIRECT_HOST = 'localhost:3000'
+    # JWT_COOKIE_SECURE = False  # Set to False for development purposes
+    # JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=1)
 
 class TestingConfig(BaseConfig):
     """Testing configuration."""

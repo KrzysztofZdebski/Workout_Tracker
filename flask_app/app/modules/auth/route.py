@@ -236,7 +236,7 @@ def logout_access():
     return make_response(result)
 
 
-@auth_bp.post('/refresh')
+@auth_bp.get('/refresh')
 @jwt_required(refresh=True)
 def refresh():
     """ Example endpoint for refreshing access token.

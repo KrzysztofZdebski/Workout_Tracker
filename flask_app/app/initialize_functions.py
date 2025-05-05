@@ -28,6 +28,7 @@ def initialize_cors(app: Flask):
 
 def initialize_jwt(app: Flask):
     with app.app_context():
+        from app.db.models import User
         jwt.init_app(app)
         
         
@@ -58,6 +59,13 @@ def initialize_jwt(app: Flask):
                 'message': 'Missing token. Please log in again.',
                 'error': 'missing_token'
             }), 401
+        
+        @jwt.additional_claims_loader
+        def add_claims_to_jwt(user):
+            return {
+                "username": user.username,
+                "email": user.email,
+            }
 
         return jwt
 

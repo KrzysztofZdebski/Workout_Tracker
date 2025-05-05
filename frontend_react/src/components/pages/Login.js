@@ -1,43 +1,45 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../../utils/api"; // Import the configured axios instance
 
 function Login() {
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     function loginUser(event) {
         event.preventDefault(); 
         const loginData = {
-            email: email,
+            username: username,
             password: password
         };
 
-        axios.post("http://localhost:5000/api/accounts/login", loginData, {
+        axios.post("/auth/login", loginData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                withCredentials: true
+                // withCredentials: true
         })
-            .then(response => {
-                console.log(response);
-                console.log(response.data); // Log the response to see its structure
-                console.log("CSRF Token:", response.data.response.csrf_token);
-                if (response.status === 200) {
-                    alert("Login successful!");
-                } else {
-                    alert("Login failed. Please check your credentials.");
-                }
-            })
-            .catch(error => {
-                console.error("There was an error logging in!", error);
-                alert("An error occurred. Please try again later.");
-            });
+        .then(response => {
+            console.log(response);
+            console.log(response.data); // Log the response to see its structure
+            if (response.status === 200) {
+                const newAccessToken = response.data.access_token;
+                localStorage.setItem('access_token', newAccessToken);
+                alert("Login successful!");
+            } else {
+                alert("Login failed. Please check your credentials.");
+            }
+        })
+        .catch(error => {
+            console.error("There was an error logging in!", error);
+            alert("An error occurred. Please try again later.");
+        });
     }
 
     function logoutUser(event) {
         event.preventDefault(); 
         const loginData = {
-            email: email,
+            username: username,
             password: password
         };
 
@@ -62,8 +64,8 @@ function Login() {
         <h2>Login</h2>
         <form>
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" required onChange={(event) => setEmail(event.target.value)}/>
+            <label htmlFor="username">Username:</label>
+            <input type="username" id="username" required onChange={(event) => setUsername(event.target.value)}/>
           </div>
           <div className="form-group">
             <label htmlFor="password">Password:</label>
