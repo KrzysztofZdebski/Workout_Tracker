@@ -1,13 +1,13 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import api from '../utils/api';
+import AuthContext from '../utils/AuthProvider';
 
 function Navbar() {
+    const {isAuthenticated} = useContext(AuthContext);
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
-    const [authenticated, setAuthenticated] = useState(false);
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -22,16 +22,6 @@ function Navbar() {
 
     useEffect(() => {
         showButton();
-    }, []);
-    useEffect(() => {
-        const token = localStorage.getItem('access_token');
-        api.get('/auth/login')
-        .then((response) => {
-            setAuthenticated(true);
-        })
-        .catch((error) => {
-            setAuthenticated(false);
-        });
     }, []);
 
     window.addEventListener('resize', showButton);
@@ -73,11 +63,11 @@ function Navbar() {
                 </li>
                 <li className='nav-item'>
                 <Link
-                    to='/login'
+                    to={isAuthenticated ? '/account' : '/login'}
                     className='nav-links'
                     onClick={closeMobileMenu}
                 >
-                    {authenticated ? 'Account' : 'Login'}
+                    {isAuthenticated ? 'Account' : 'Login'}
                 </Link>
                 </li>
             </ul>

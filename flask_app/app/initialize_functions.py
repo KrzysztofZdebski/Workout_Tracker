@@ -72,6 +72,9 @@ def initialize_jwt(app: Flask):
 def initialize_blocklist_cleanup(app: Flask):
     import schedule, time
     from datetime import datetime, timedelta, timezone
+    from threading import Event
+
+    stop_event = Event()  # Create an event to signal the thread to stop
 
     def delete_expired_entries(session, model, expiration_time):
         expired = datetime.now(timezone(timedelta(hours=2))) - expiration_time
@@ -81,11 +84,19 @@ def initialize_blocklist_cleanup(app: Flask):
     def run_scheduler():
         with app.app_context():
             schedule.every(10).minutes.do(delete_expired_entries, session=db.session, model=TokenBlocklist, expiration_time=app.config['JWT_REFRESH_TOKEN_EXPIRES'])
-            while True:
+            while not stop_event.is_set():  # Check if the stop event is set
                 schedule.run_pending()
                 time.sleep(1)
 
     # Run the scheduler in a separate thread
     scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
     scheduler_thread.start()
+
+    # Add a method to stop the scheduler
+    def stop_scheduler():
+        stop_event.set()  # Signal the thread to stop
+        scheduler_thread.join()  # Wait for the thread to finish
+
+    # Attach the stop method to the app for later use
+    app.stop_scheduler = stop_scheduler
 

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import api from "../../utils/api"; // Import the configured axios instance
 import Cookies from 'js-cookie';
+import AuthContext from "../../utils/AuthProvider"; // Import the AuthContext
+import Logout from "../Logout";
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const {setAuthenticated} = useContext(AuthContext);
+    const navigate = useNavigate(); // Initialize the navigate function
 
     function loginUser(event) {
         event.preventDefault(); 
@@ -26,7 +31,8 @@ function Login() {
             if (response.status === 200) {
                 const newAccessToken = response.data.access_token;
                 localStorage.setItem('access_token', newAccessToken);
-                alert("Login successful!");
+                setAuthenticated(true); // Set the authenticated state to true
+                navigate('/account'); // Redirect to the main page
             } else {
                 alert("Login failed. Please check your credentials.");
             }
@@ -37,36 +43,6 @@ function Login() {
         });
     }
 
-    async function logoutUser(event) {
-        event.preventDefault(); 
-        const csrfToken = Cookies.get('csrf_refresh_token'); 
-
-        await api.delete("/auth/logout/access")
-        .then(response => {
-            console.log(response.data); 
-            console.log('logged out access token');
-        })
-        .catch(error => {
-            console.error("There was an error logging out!", error);
-            alert("An error occurred. Please try again later.");
-        });
-        localStorage.removeItem('access_token'); 
-        await axios.delete("/auth/logout/refresh", {
-            headers: {
-                'X-CSRF-Token': csrfToken, 
-            },
-            withCredentials: true
-        })
-        .then(response => {
-            console.log(response.data); 
-            console.log('logged out refresh token');
-        })
-        .catch(error => {
-            console.error("There was an error logging out!", error);
-            alert("An error occurred. Please try again later.");
-        });
-
-    }
 
     return (
       <div className="login-container">
@@ -82,7 +58,6 @@ function Login() {
           </div>
           <button type="submit" onClick={(event) => loginUser(event)}>Login</button>
         </form>
-        <button onClick={(event) => logoutUser(event)}>Logout</button>
       </div>
     );
 }
