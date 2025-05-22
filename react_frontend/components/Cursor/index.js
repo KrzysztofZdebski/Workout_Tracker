@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CustomCursor from "custom-cursor-react";
-import "custom-cursor-react/dist/index.css";
+import CursorFollow from "react-cursor-follow";
 import { useTheme } from "next-themes";
 
 const Cursor = () => {
   const theme = useTheme();
-  const [mount, setMount] = useState();
+  const [mount, setMount] = useState(false);
 
   const getCusomColor = () => {
     if (theme.theme === "dark") {
@@ -13,26 +12,26 @@ const Cursor = () => {
     } else if (theme.theme === "light") {
       return "#000";
     }
+    return "#000";
   };
 
   useEffect(() => {
     setMount(true);
   }, []);
+
   return (
     <>
       {mount && (
-        <CustomCursor
-          targets={[".link"]}
-          customClass="custom-cursor"
-          dimensions={30}
-          fill={getCusomColor()}
-          smoothness={{
-            movement: 1,
-            scale: 0.1,
-            opacity: 0.2,
-          }}
-          targetOpacity={0.5}
-          targetScale={2}
+        <CursorFollow
+          color={getCusomColor()}
+          size={30}
+          opacity={0.7}
+          borderColor={getCusomColor()}
+          borderWidth={2}
+          scale={1.2}
+          zIndex={9999}
+          style={{ mixBlendMode: theme.theme === "dark" ? "difference" : "normal" }}
+          duration={0}
         />
       )}
     </>
