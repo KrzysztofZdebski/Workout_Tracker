@@ -5,6 +5,7 @@ import ProjectResume from "../components/ProjectResume";
 import Socials from "../components/Socials";
 import Button from "../components/Button";
 import { useTheme } from "next-themes";
+import ProtectedRoute from "../utils/protectedRoute";
 // Data
 import data from "../data/portfolio.json";
 
@@ -22,6 +23,7 @@ const Resume = () => {
   }, []);
   return (
     <>
+    <ProtectedRoute>
       {process.env.NODE_ENV === "development" && (
         <div className="fixed bottom-6 right-6">
           <Button onClick={() => router.push("/edit")} type={"primary"}>
@@ -122,6 +124,7 @@ const Resume = () => {
           </div>
         )}
       </div>
+    </ProtectedRoute>
     </>
   );
 };
