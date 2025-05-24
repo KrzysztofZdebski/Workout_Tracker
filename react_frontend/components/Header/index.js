@@ -122,8 +122,11 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
         </Popover>
         {mounted && (
           <div
+            // className={
+            //   `mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex bg-white ${theme === "dark" ? "bg-neutral-900" : "bg-white"} dark:text-white py-4 px-8 rounded-2xl`
+            // }
             className={
-              `mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex bg-white ${theme === "dark" ? "bg-neutral-900" : "bg-white"} dark:text-white py-4 px-8 rounded-2xl`
+              `mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex ${theme === "dark" ? "bg-black/70" : "bg-white/70"} backdrop-blur-md py-4 px-8 rounded-2xl`
             }
           >
             <h1
