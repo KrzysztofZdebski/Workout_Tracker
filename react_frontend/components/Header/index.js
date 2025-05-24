@@ -1,8 +1,9 @@
 import { Popover } from "@headlessui/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "../Button";
+import AuthContext from "../../utils/authProvider";
 // Local Data
 import data from "../../data/portfolio.json";
 
@@ -10,6 +11,7 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
     const router = useRouter();
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const {isAuthenticated} = useContext(AuthContext);
 
     const { name, showBlog, showResume } = data;
 
@@ -160,6 +162,16 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
                 <Button onClick={() => router.push("/workouttracker")}>
                 Workout Tracker
                 </Button>
+
+                {isAuthenticated ? 
+                <Button onClick={() => router.push("/account")}>
+                Account
+                </Button>
+                :
+                <Button onClick={() => router.push("/login")}>
+                Login
+                </Button>}
+                
                 {mounted && theme && (
                 <Button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const authApi = axios.create({
-    baseURL: process.env.REACT_APP_authApi_BASE_URL, //replace with your BaseURL
+    baseURL: "http://localhost:5000", //replace with your BaseURL
     headers: {
         'Content-Type': 'application/json', // change according header type accordingly
     }

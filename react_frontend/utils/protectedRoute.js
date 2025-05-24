@@ -1,11 +1,19 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
-import AuthContext from "./authProvider"; // Import the AuthContext
-import { useContext } from "react"; // Import useContext
+import React, { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+import AuthContext from "./authProvider";
 
-function ProtectedRoute({children}) {
-    const { isAuthenticated } = useContext(AuthContext); // Use the AuthContext
-    return isAuthenticated ? children : <Navigate to="/login" />;
-}
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.replace("/login");
+    }
+  }, [isAuthenticated, router]);
+
+  if (!isAuthenticated) return null; // Or a loading spinner
+  return children;
+};
 
 export default ProtectedRoute;
