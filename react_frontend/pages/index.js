@@ -21,6 +21,7 @@ export default function Home() {
   const textTwo = useRef();
   const textThree = useRef();
   const textFour = useRef();
+  const textFive = useRef();
 
   // Handling Scroll
   const handleWorkScroll = () => {
@@ -41,8 +42,8 @@ export default function Home() {
 
   useIsomorphicLayoutEffect(() => {
     stagger(
-      [textOne.current, textTwo.current, textThree.current, textFour.current],
-      { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
+      [textOne.current, textTwo.current, textThree.current, textFour.current, textFive.current],
+      { y: 40, x: -10, transform: "scale(0.8)" },
       { y: 0, x: 0, transform: "scale(1)" }
     );
   }, []);
@@ -74,6 +75,24 @@ export default function Home() {
               className="w-full p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold laptop:w-4/5"
             >
               {data.headerTaglineTwo}
+            </h1>
+            <h1
+              ref={textThree}
+              className="w-full p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold laptop:w-4/5"
+            >
+              {data.headerTaglineThree}
+            </h1>
+            <h1
+              ref={textFour}
+              className="w-full p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold laptop:w-4/5"
+            >
+              {data.headerTaglineFour}
+            </h1>
+            <h1
+              ref={textFive}
+              className="w-full p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold laptop:w-4/5"
+            >
+              {data.headerTaglineFive}
             </h1>
           </div>
 
