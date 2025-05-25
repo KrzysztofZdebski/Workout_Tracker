@@ -12,3 +12,4 @@ cryptography
 redis
 schedule
 requests
+flask-migrate

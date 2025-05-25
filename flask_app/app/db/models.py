@@ -48,3 +48,48 @@ class TokenBlocklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(36), nullable=False, index=True)
     created_at = db.Column(db.DateTime, nullable=False)
+
+class Product(db.Model):
+    __tablename__ = 'product'
+    id                = mapped_column(sa.String(), primary_key=True, default=str(uuid4()))
+    name              = mapped_column(sa.String(255), nullable=False)
+    calories          = mapped_column(sa.Float, nullable=False)
+    carbohydrates     = mapped_column(sa.Float, nullable=False)
+    fat               = mapped_column(sa.Float, nullable=False)
+    protein           = mapped_column(sa.Float, nullable=False)
+
+    def __repr__(self):
+        return f'<Product {self.name}>'
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def get_by_id(cls, product_id):
+        return cls.query.filter_by(id=product_id).first()
+
+class UserProductEntry(db.Model):
+    __tablename__ = 'user_product_entry'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(), db.ForeignKey('user.id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=True)
+    product_barcode = db.Column(db.String(255), nullable=True)
+    date = db.Column(db.DateTime, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    # Optionally, add a timestamp or quantity field
+
+    user = db.relationship('User', backref='product_entries')
+    product = db.relationship('Product', backref='user_entries')
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()

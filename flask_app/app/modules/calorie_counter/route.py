@@ -62,3 +62,71 @@ def get_product():
     """
     result = calorie_counter_controller.get_product(request)
     return make_response(jsonify(data=result))
+
+@calorie_counter_bp.route('/save_product', methods=['POST'])
+@jwt_required()
+def save_product():
+    """ Endpoint to save a product.
+    ---
+    tags:
+      - Product API
+    parameters:
+      - in: header
+        name: Authorization
+        required: true
+        type: string
+        description: Bearer token for authentication
+      - in: body
+        name: product
+        description: The product details to save.
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Apple"
+            calories:
+              type: number
+              example: 95
+            carbohydrates:
+              type: number
+              example: 25
+            fat:
+              type: number
+              example: 0.3
+            protein:
+              type: number
+              example: 0.5
+            barcode:
+              type: string
+              example: "5900259133366"
+            weight:
+              type: number
+              example: 100
+            date:
+              type: string
+              format: date-time
+              example: "2023-10-01T12:00:00Z"
+    consumes:
+      - application/json
+    responses:
+      201:
+        description: Product saved successfully
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Product saved successfully"
+      400:
+        description: Bad request
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Missing required field: product_id"
+    """
+    result = calorie_counter_controller.save_product(request, current_user)
+    return make_response(jsonify(data=result), 201)
