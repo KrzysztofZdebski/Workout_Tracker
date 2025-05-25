@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "../Button";
 import AuthContext from "../../utils/authProvider";
 // Local Data
-import data from "../../data/portfolio.json";
+import data from "../../data/data.json";
 
 const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
     const router = useRouter();

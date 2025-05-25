@@ -11,7 +11,7 @@ import Button from "../components/Button";
 import Link from "next/link";
 
 // Local Data
-import data from "../data/portfolio.json";
+import data from "../data/data.json";
 
 export default function Home() {
   // Ref
@@ -65,33 +65,21 @@ export default function Home() {
           <div className="mt-5">
             <h1
               ref={textOne}
-              className="w-4/5 p-1 text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl tablet:p-2 text-bold mob:w-full laptop:w-4/5"
+              className="w-4/5 p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold mob:w-full laptop:w-4/5"
             >
               {data.headerTaglineOne}
             </h1>
             <h1
               ref={textTwo}
-              className="w-full p-1 text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl tablet:p-2 text-bold laptop:w-4/5"
+              className="w-full p-1 text-xl tablet:text-4xl laptop:text-4xl laptopl:text-6xl tablet:p-2 text-bold laptop:w-4/5"
             >
               {data.headerTaglineTwo}
-            </h1>
-            <h1
-              ref={textThree}
-              className="w-full p-1 text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl tablet:p-2 text-bold laptop:w-4/5"
-            >
-              {data.headerTaglineThree}
-            </h1>
-            <h1
-              ref={textFour}
-              className="w-full p-1 text-3xl tablet:text-6xl laptop:text-6xl laptopl:text-8xl tablet:p-2 text-bold laptop:w-4/5"
-            >
-              {data.headerTaglineFour}
             </h1>
           </div>
 
           <Socials className="mt-2 laptop:mt-5" />
         </div>
-        <div className="p-2 mt-10 laptop:mt-30 laptop:p-0" ref={workRef}>
+        {/* <div className="p-2 mt-10 laptop:mt-30 laptop:p-0" ref={workRef}>
           <h1 className="text-2xl text-bold">Work.</h1>
 
           <div className="grid grid-cols-1 gap-4 mt-5 laptop:mt-10 tablet:grid-cols-2">
@@ -118,7 +106,7 @@ export default function Home() {
               />
             ))}
           </div>
-        </div>
+        </div> */}
         {/* This button should not go into production */}
         {process.env.NODE_ENV === "development" && (
           <div className="fixed bottom-5 right-5">
@@ -133,7 +121,7 @@ export default function Home() {
             {data.aboutpara}
           </p>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </div>
   );
