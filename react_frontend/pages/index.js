@@ -49,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={`relative`}>
+    <div className={`relative min-h-screen`}>
       <Head>
         <title>WorkoutTracker</title>
       </Head>
