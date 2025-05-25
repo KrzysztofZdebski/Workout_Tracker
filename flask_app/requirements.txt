@@ -11,3 +11,4 @@ werkzeug
 cryptography
 redis
 schedule
+requests
