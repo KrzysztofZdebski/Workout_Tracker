@@ -8,6 +8,7 @@ import Logout from "../components/Logout";
 import Header from "../components/Header/index.js";
 import Button from "../components/Button";
 import { useTheme } from "next-themes";
+import Head from "next/head";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -50,6 +51,9 @@ function Login() {
 
     return (
         <div className={`relative min-h-screen`}>
+            <Head>
+                <title>WorkoutTracker</title>
+            </Head>
             <div className="gradient-circle"></div>
             <div className="gradient-circle-bottom"></div>
             <div className="container mx-auto mb-10">
