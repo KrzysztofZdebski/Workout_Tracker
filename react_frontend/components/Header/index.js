@@ -122,9 +122,6 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
         </Popover>
         {mounted && (
           <div
-            // className={
-            //   `mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex bg-white ${theme === "dark" ? "bg-neutral-900" : "bg-white"} dark:text-white py-4 px-8 rounded-2xl`
-            // }
             className={
               `mt-10 hidden flex-row items-center justify-between sticky top-0 z-10 tablet:flex ${theme === "dark" ? "bg-black/70" : "bg-white/70"} backdrop-blur-md py-4 px-8 rounded-2xl`
             }
@@ -136,33 +133,16 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             WorkoutTracker
             </h1>
             <div className="flex">
-                {/* <Button onClick={handleWorkScroll}>Work</Button>
-                <Button onClick={handleAboutScroll}>About</Button>
-                {showBlog && (
-                <Button onClick={() => router.push("/blog")}>Blog</Button>
-                )}
-                {showResume && (
-                <Button
-                    onClick={() => router.push("/resume")}
-                    classes="first:ml-1"
-                >
-                    Resume
-                </Button>
-                )}
-
-                <Button onClick={() => window.open("mailto:hello@chetanverma.com")}>
-                Contact
-                </Button> */}
                 {router.pathname !== "/" ? 
                     <Button onClick={() => router.push("/")}>
                     Home
                     </Button> 
                     : null
                 }
-                <Button onClick={() => router.push("/caloretracker")}>
+                <Button onClick={() => router.push("/calorie_tracker")}>
                 Calorie Tracker
                 </Button>
-                <Button onClick={() => router.push("/workouttracker")}>
+                <Button onClick={() => router.push("/workout_tracker")}>
                 Workout Tracker
                 </Button>
 

@@ -29,26 +29,27 @@ authApi.interceptors.response.use(
 async (error) => {
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-    originalRequest._retry = true;
-    const csrfToken = Cookies.get('csrf_refresh_token'); // get CSRF token from cookies
-    if (csrfToken) {
-        try {
-            const response = await axios.get(`/auth/refresh`,{
-                withCredentials: true, // include cookies in the request
-                headers: {
-                    'X-CSRF-Token': csrfToken, // set CSRF token in header
-                }
-            });
-            // don't use axious instance that already configured for refresh token authApi call
-            const newAccessToken = response.data.access_token;
-            localStorage.setItem('access_token', newAccessToken);  //set new access token
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            return axios(originalRequest); //recall authApi with new token
-        } catch (error) {
-        // Handle token refresh failure
-        // mostly logout the user and re-authenticate by login again
+        originalRequest._retry = true;
+        const csrfToken = Cookies.get('csrf_refresh_token'); // get CSRF token from cookies
+        if (csrfToken) {
+            console.log('Access token expired, trying to refresh...');
+            try {
+                const response = await axios.get("http://localhost:5000/auth/refresh",{
+                    withCredentials: true, // include cookies in the request
+                    headers: {
+                        'X-CSRF-Token': csrfToken, // set CSRF token in header
+                    }
+                });
+                // don't use axious instance that already configured for refresh token authApi call
+                const newAccessToken = response.data.access_token;
+                localStorage.setItem('access_token', newAccessToken);  //set new access token
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return axios(originalRequest); //recall authApi with new token
+            } catch (error) {
+            // Handle token refresh failure
+            // mostly logout the user and re-authenticate by login again
+            }
         }
-    }
     }
     return Promise.reject(error);
 }

@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Socials from "../components/Socials";
 import { useIsomorphicLayoutEffect } from "../utils";
 import { stagger } from "../animations";
-import Footer from "../components/Footer";
 import Head from "next/head";
 import Button from "../components/Button";
 import Link from "next/link";
@@ -96,34 +95,6 @@ export default function Home() {
 
           <Socials className="mt-2 laptop:mt-5" />
         </div>
-        {/* <div className="p-2 mt-10 laptop:mt-30 laptop:p-0" ref={workRef}>
-          <h1 className="text-2xl text-bold">Work.</h1>
-
-          <div className="grid grid-cols-1 gap-4 mt-5 laptop:mt-10 tablet:grid-cols-2">
-            {data.projects.map((project) => (
-              <WorkCard
-                key={project.id}
-                img={project.imageSrc}
-                name={project.title}
-                description={project.description}
-                onClick={() => window.open(project.url)}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="p-2 mt-10 laptop:mt-30 laptop:p-0">
-          <h1 className="text-2xl tablet:m-10 text-bold">Services.</h1>
-          <div className="grid grid-cols-1 gap-6 mt-5 tablet:m-10 laptop:grid-cols-2">
-            {data.services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                name={service.title}
-                description={service.description}
-              />
-            ))}
-          </div>
-        </div> */}
         {/* This button should not go into production */}
         {process.env.NODE_ENV === "development" && (
           <div className="fixed bottom-5 right-5">

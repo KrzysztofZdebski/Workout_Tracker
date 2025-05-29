@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import authApi from "../utils/authApi";
-import Cookies from 'js-cookie';
 import AuthContext from "../utils/authProvider.js"; // Import the AuthContext
-import Logout from "../components/Logout";
 import Header from "../components/Header/index.js";
 import Button from "../components/Button";
 import { useTheme } from "next-themes";
 import Head from "next/head";
+import Loading from "../components/Loading/index.js";
 
 function Login() {
     const [username, setUsername] = useState("");
@@ -16,9 +14,11 @@ function Login() {
     const {setAuthenticated} = useContext(AuthContext);
     const router = useRouter();
     const {theme, setTheme} = useTheme();
+    const [loading, setLoading] = useState(false);
 
     function loginUser(event) {
         event.preventDefault(); 
+        setLoading(true); // Set loading state to true when the form is submitted
         const loginData = {
             username: username,
             password: password
@@ -61,7 +61,7 @@ function Login() {
                 <div className="flex items-center justify-center pt-10">
                     <div className={`flex flex-col items-center w-full max-w-md p-8 ${theme === "dark" ? "bg-black" : "bg-white"} shadow-lg rounded-2xl`}>
                         <h2 className={`mb-6 text-3xl font-bold ${theme === "dark" ? "text-white" : "text-grey-800"}`}>Login</h2>
-                        <form className="flex flex-col w-full gap-4">
+                        <form className="flex flex-col w-full gap-4" onSubmit={loginUser}>
                             <div className="flex flex-col gap-1 form-group">
                                 <label htmlFor="username" className={`font-medium ${theme === "dark" ? "text-white" : "text-grey-800"}`}>Username:</label>
                                 <input 
@@ -82,13 +82,16 @@ function Login() {
                                     className="px-4 py-2 transition border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 />
                             </div>
-                            <Button 
-                                type="primary" 
-                                className="w-full px-6 py-2 mt-4 font-semibold text-white transition bg-blue-600 rounded-lg shadow hover:bg-blue-700"
-                                onClick={loginUser}
-                            >
-                                Login
-                            </Button>
+                            {loading ? (
+                                <Loading />
+                            ) : (
+                                <Button 
+                                    type="submit" 
+                                    className="w-full px-6 py-2 mt-4 font-semibold text-white transition bg-blue-600 rounded-lg shadow hover:bg-blue-700"
+                                >
+                                    Login
+                                </Button>
+                            )}
                         </form>
                     </div>
                 </div>
