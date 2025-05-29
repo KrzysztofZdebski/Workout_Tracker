@@ -130,3 +130,64 @@ def save_product():
     """
     result = calorie_counter_controller.save_product(request, current_user)
     return make_response(jsonify(data=result), 201)
+
+@calorie_counter_bp.route('/get_products', methods=['GET'])
+@jwt_required()
+def get_products():
+    """ Endpoint to get all products.
+    ---
+    tags:
+      - Product API
+    parameters:
+      - in: header
+        name: Authorization
+        required: true
+        type: string
+        description: Bearer token for authentication
+      - in: query
+        name: date
+        required: true
+        schema:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date
+              example: "2023-10-01"
+    responses:
+      200:
+        description: List of products
+        schema:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    example: "2023-10-01"
+                  name:
+                    type: string
+                    example: "Apple"
+                  calories:
+                    type: integer
+                    example: 95
+                  carbohydrates:
+                    type: number
+                    example: 25
+                  fat:
+                    type: number
+                    example: 0.3
+                  protein:
+                    type: number
+                    example: 0.5
+                  weight:
+                    type: number
+                    example: 100
+                  
+    """
+    result = calorie_counter_controller.get_products(request, current_user)
+    return make_response(jsonify(data=result))

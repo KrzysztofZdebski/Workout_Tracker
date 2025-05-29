@@ -1,6 +1,6 @@
 from .foodApi import FoodApi
 from app.db.models import Product, UserProductEntry
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 
 food_api = FoodApi(base_url='https://world.openfoodfacts.org/api/v0')
@@ -74,3 +74,61 @@ class Calorie_counterController:
         user_product_entry.save()
 
         return {'message': 'Product saved successfully'}, 201
+    
+    def get_products(self, request, user):
+        date_str = request.args.get('date')
+        if not date_str:
+            return {'message': 'No date provided'}, 400
+        
+        try:
+            day_start = datetime.strptime(date_str, "%Y-%m-%d")
+            day_end = day_start + timedelta(days=1)
+        except ValueError:
+            return {'message': 'Invalid date format'}, 400
+        
+        products = UserProductEntry.query.filter(
+            UserProductEntry.user_id == user.id,
+            UserProductEntry.date >= day_start,
+            UserProductEntry.date < day_end
+        ).all()
+        if not products:
+            return {'message': 'No products found'}, 404
+        
+        product_list = []
+        for entry in products:
+            if entry.product_id:
+                product = Product.query.filter_by(id=entry.product_id).first()
+                if product:
+                    product_data = {
+                        'product_id': product.id,
+                        'name': product.name,
+                        'calories': product.calories,
+                        'carbohydrates': product.carbohydrates,
+                        'fat': product.fat,
+                        'protein': product.protein,
+                        'barcode': entry.product_barcode,
+                        'weight': entry.weight,
+                        'date': entry.date.isoformat(),
+                    }
+                    product_list.append(product_data)
+            if entry.product_barcode:
+                response = food_api.get_product(entry.product_barcode)
+                if 'error' in response:
+                    continue
+                if not response or 'product' not in response:
+                    continue
+                product = response['product']
+                product_data = {
+                    'product_id': None,
+                    'name': product.get('product_name', 'Unknown'),
+                    'calories': product.get('nutriments', {}).get('energy-kcal_100g', 0),
+                    'carbohydrates': product.get('nutriments', {}).get('carbohydrates_100g', 0),
+                    'fat': product.get('nutriments', {}).get('fat_100g', 0),
+                    'protein': product.get('nutriments', {}).get('proteins_100g', 0),
+                    'barcode': entry.product_barcode,
+                    'weight': entry.weight,
+                    'date': entry.date.isoformat(),
+                }
+                product_list.append(product_data)
+        
+        return {'products': product_list}, 200
