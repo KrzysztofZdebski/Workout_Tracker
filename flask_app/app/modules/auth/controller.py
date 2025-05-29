@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from flask import  jsonify
+from flask import jsonify
 from flask_jwt_extended import create_access_token, create_refresh_token, set_refresh_cookies, unset_refresh_cookies
 from app.db.models import TokenBlocklist, User
 

@@ -51,12 +51,12 @@ class TokenBlocklist(db.Model):
 
 class Product(db.Model):
     __tablename__ = 'product'
-    id                = mapped_column(sa.String(), primary_key=True, default=str(uuid4()))
-    name              = mapped_column(sa.String(255), nullable=False)
-    calories          = mapped_column(sa.Float, nullable=False)
-    carbohydrates     = mapped_column(sa.Float, nullable=False)
-    fat               = mapped_column(sa.Float, nullable=False)
-    protein           = mapped_column(sa.Float, nullable=False)
+    id = mapped_column(sa.String(), primary_key=True, default=str(uuid4()))
+    name = mapped_column(sa.String(255), nullable=False)
+    calories = mapped_column(sa.Float, nullable=False)
+    carbohydrates = mapped_column(sa.Float, nullable=False)
+    fat = mapped_column(sa.Float, nullable=False)
+    protein = mapped_column(sa.Float, nullable=False)
 
     def __repr__(self):
         return f'<Product {self.name}>'
