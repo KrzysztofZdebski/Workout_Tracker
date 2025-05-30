@@ -18,8 +18,7 @@ function CalorieTracker() {
     const getFoodsForDate = (date) => {
         authApi.get(`/calorie_counter/get_products?date=${date}`)
             .then(response => {
-                setFoods(response.data);
-                console.log(foods);
+                setFoods(response.data.data[0].products || []);
             })
             .catch(error => {
                 console.error("Error fetching foods:", error);

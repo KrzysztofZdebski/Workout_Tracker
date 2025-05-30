@@ -86,18 +86,19 @@ class Calorie_counterController:
         except ValueError:
             return {'message': 'Invalid date format'}, 400
         
-        print(day_start, day_end)
+        # print(day_start, day_end)
         products = UserProductEntry.query.filter(
             UserProductEntry.user_id == user.id,
             UserProductEntry.date >= day_start,
             UserProductEntry.date < day_end
         ).all()
-        print(products)
+        # print(products)
         if not products:
             return {'message': 'No products found'}, 404
         
         product_list = []
         for entry in products:
+            print(entry)
             if entry.product_id:
                 product = Product.query.filter_by(id=entry.product_id).first()
                 if product:
@@ -133,4 +134,5 @@ class Calorie_counterController:
                 }
                 product_list.append(product_data)
         
+        # print(product_list)
         return {'products': product_list}, 200
